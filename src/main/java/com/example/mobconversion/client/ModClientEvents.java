@@ -1,11 +1,14 @@
 package com.example.mobconversion.client;
 
-import net.neoforged.fml.ModContainer;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModLoadingContext;
 
 public class ModClientEvents {
 
-    public static void registerConfigScreen(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> ClothConfigScreen.create(parent));
+    public static void registerConfigScreen() {
+        ModLoadingContext.get().registerExtensionPoint(
+            ConfigScreenHandler.ConfigScreenFactory.class,
+            () -> new ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> ClothConfigScreen.create(parent))
+        );
     }
 }

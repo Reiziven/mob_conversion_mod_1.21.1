@@ -3,15 +3,16 @@ package com.example.mobconversion;
 import com.example.mobconversion.config.MobConversionConfig;
 import com.example.mobconversion.event.MobConversionEvents;
 import com.example.mobconversion.util.EntityPoolManager;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,24 +24,22 @@ public class MobConversionMod {
     public static final String MOD_ID = "mobconversion";
     private static final Logger LOGGER = LogManager.getLogger("MobConversion");
 
-    public MobConversionMod(IEventBus modEventBus, ModContainer container) {
-        LOGGER.info("Initializing Mob Conversion Mod for NeoForge 1.21.1");
+    public MobConversionMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        LOGGER.info("Initializing Mob Conversion Mod for Forge 1.20.1");
 
-        // Config Migration
         Path configDir = FMLPaths.CONFIGDIR.get();
         migrateConfig(configDir, "villagerguard-common.toml", MOD_ID + "-common.toml");
         migrateConfig(configDir, "villagerguardconversion-common.toml", MOD_ID + "-common.toml");
 
-        container.registerConfig(ModConfig.Type.COMMON, MobConversionConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MobConversionConfig.SPEC);
         modEventBus.addListener(this::onConfigReload);
 
-        // Register Cloth Config screen factory only on the client
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            com.example.mobconversion.client.ModClientEvents.registerConfigScreen(container);
+            com.example.mobconversion.client.ModClientEvents.registerConfigScreen();
         }
 
-        // Register events
-        NeoForge.EVENT_BUS.register(new MobConversionEvents());
+        MinecraftForge.EVENT_BUS.register(new MobConversionEvents());
     }
 
     private void migrateConfig(Path dir, String oldName, String newName) {

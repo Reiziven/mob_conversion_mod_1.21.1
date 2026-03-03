@@ -1,31 +1,27 @@
 package com.example.mobconversion.event;
 
-import com.example.mobconversion.config.MobConversionConfig;
 import com.example.mobconversion.util.EntityPoolManager;
 import com.example.mobconversion.util.MobConversionManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.Villager;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
-
-import java.util.List;
-import java.util.Set;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class MobConversionEvents {
 
     @SubscribeEvent
-    public void onEntityTick(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity && livingEntity.level() instanceof ServerLevel serverLevel) {
-            ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
+    public void onEntityTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (livingEntity.level() instanceof ServerLevel serverLevel) {
+            ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
             if (entityId != null && EntityPoolManager.getAllTriggerIds().contains(entityId.toString())) {
-                // We'll only log this once in a while or it will flood the log
                 MobConversionManager.onLivingEntityTick(serverLevel, livingEntity);
             }
         }
@@ -33,18 +29,17 @@ public class MobConversionEvents {
 
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity) {
-            ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
-            if (entityId != null && EntityPoolManager.getAllTriggerIds().contains(entityId.toString())) {
-                MobConversionManager.clearCooldown(livingEntity.getUUID());
-            }
+        LivingEntity livingEntity = event.getEntity();
+        ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
+        if (entityId != null && EntityPoolManager.getAllTriggerIds().contains(entityId.toString())) {
+            MobConversionManager.clearCooldown(livingEntity.getUUID());
         }
     }
 
     @SubscribeEvent
     public void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
         if (event.getEntity() instanceof LivingEntity livingEntity) {
-            ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
+            ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
             if (entityId != null && EntityPoolManager.getAllTriggerIds().contains(entityId.toString())) {
                 MobConversionManager.clearCooldown(livingEntity.getUUID());
             }
@@ -52,9 +47,10 @@ public class MobConversionEvents {
     }
 
     @SubscribeEvent
-    public void onLivingHurt(LivingDamageEvent.Pre event) {
-        if (event.getEntity() instanceof LivingEntity livingEntity && livingEntity.level() instanceof ServerLevel serverLevel) {
-            ResourceLocation entityId = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
+    public void onLivingHurt(LivingHurtEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (livingEntity.level() instanceof ServerLevel serverLevel) {
+            ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(livingEntity.getType());
             if (entityId != null) {
                 boolean isTrigger = EntityPoolManager.getAllTriggerIds().contains(entityId.toString());
                 if (isTrigger) {
@@ -66,7 +62,8 @@ public class MobConversionEvents {
     }
 
     @SubscribeEvent
-    public void onServerTick(ServerTickEvent.Post event) {
+    public void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         MobConversionManager.tickParticles();
     }
 

@@ -1,53 +1,50 @@
 package com.example.mobconversion.config;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 import java.util.List;
 
-/**
- * MobConversionConfig
- */
 public class MobConversionConfig {
-    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec SPEC;
+    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec SPEC;
 
     // Detection
-    public static final ModConfigSpec.IntValue THREAT_DETECTION_RADIUS;
-    public static final ModConfigSpec.IntValue BELL_DETECTION_RADIUS;
-    public static final ModConfigSpec.IntValue SCAN_COOLDOWN_TICKS;
-    public static final ModConfigSpec.IntValue ARTIFICIAL_VILLAGE_POI_RADIUS;
+    public static final ForgeConfigSpec.IntValue THREAT_DETECTION_RADIUS;
+    public static final ForgeConfigSpec.IntValue BELL_DETECTION_RADIUS;
+    public static final ForgeConfigSpec.IntValue SCAN_COOLDOWN_TICKS;
+    public static final ForgeConfigSpec.IntValue ARTIFICIAL_VILLAGE_POI_RADIUS;
 
     // Village
-    public static final ModConfigSpec.EnumValue<VillageScope> VILLAGE_SCOPE;
-    public static final ModConfigSpec.BooleanValue REQUIRE_BELL;
-    public static final ModConfigSpec.IntValue MAX_ENTITIES_PER_AREA;
-    public static final ModConfigSpec.IntValue ENTITY_SEARCH_RADIUS;
-    public static final ModConfigSpec.IntValue SHARED_COOLDOWN_RADIUS;
+    public static final ForgeConfigSpec.EnumValue<VillageScope> VILLAGE_SCOPE;
+    public static final ForgeConfigSpec.BooleanValue REQUIRE_BELL;
+    public static final ForgeConfigSpec.IntValue MAX_ENTITIES_PER_AREA;
+    public static final ForgeConfigSpec.IntValue ENTITY_SEARCH_RADIUS;
+    public static final ForgeConfigSpec.IntValue SHARED_COOLDOWN_RADIUS;
 
     // Conversion
-    public static final ModConfigSpec.BooleanValue CONVERT_NITWITS;
-    public static final ModConfigSpec.BooleanValue CONVERT_UNEMPLOYED;
-    public static final ModConfigSpec.BooleanValue CONVERT_UNTRADED_PROFESSIONALS;
-    public static final ModConfigSpec.BooleanValue ALLOW_SELF_CONVERSION;
-    public static final ModConfigSpec.BooleanValue DEFAULT_SPAWN_INSTEAD_OF_CONVERT;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> EXEMPT_ATTACKER_ENTITY_IDS;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> CONVERTIBLE_ENTITY_IDS;
+    public static final ForgeConfigSpec.BooleanValue CONVERT_NITWITS;
+    public static final ForgeConfigSpec.BooleanValue CONVERT_UNEMPLOYED;
+    public static final ForgeConfigSpec.BooleanValue CONVERT_UNTRADED_PROFESSIONALS;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SELF_CONVERSION;
+    public static final ForgeConfigSpec.BooleanValue DEFAULT_SPAWN_INSTEAD_OF_CONVERT;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> EXEMPT_ATTACKER_ENTITY_IDS;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> CONVERTIBLE_ENTITY_IDS;
 
     // Effects
-    public static final ModConfigSpec.BooleanValue CONVERSION_PARTICLES_ENABLED;
-    public static final ModConfigSpec.IntValue CONVERSION_PARTICLE_DURATION_TICKS;
+    public static final ForgeConfigSpec.BooleanValue CONVERSION_PARTICLES_ENABLED;
+    public static final ForgeConfigSpec.IntValue CONVERSION_PARTICLE_DURATION_TICKS;
 
     // Entity Pool
-    public static final ModConfigSpec.IntValue MAX_ENTRIES;
-    public static final ModConfigSpec.DoubleValue DEFAULT_CHANCE;
-    public static final ModConfigSpec.EnumValue<ConversionMode> DEFAULT_MODE;
-    public static final ModConfigSpec.IntValue DEFAULT_PRIORITY;
-    public static final ModConfigSpec.BooleanValue DEFAULT_DROP_LOOT;
-    public static final ModConfigSpec.IntValue DEFAULT_COOLDOWN_TICKS;
-    public static final ModConfigSpec.EnumValue<VillageScopeOverride> DEFAULT_VILLAGE_SCOPE;
-    public static final ModConfigSpec.EnumValue<BooleanOverride> DEFAULT_REQUIRE_BELL;
-    public static final ModConfigSpec.IntValue DEFAULT_MAX_LIMIT;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ENTRIES;
+    public static final ForgeConfigSpec.IntValue MAX_ENTRIES;
+    public static final ForgeConfigSpec.DoubleValue DEFAULT_CHANCE;
+    public static final ForgeConfigSpec.EnumValue<ConversionMode> DEFAULT_MODE;
+    public static final ForgeConfigSpec.IntValue DEFAULT_PRIORITY;
+    public static final ForgeConfigSpec.BooleanValue DEFAULT_DROP_LOOT;
+    public static final ForgeConfigSpec.IntValue DEFAULT_COOLDOWN_TICKS;
+    public static final ForgeConfigSpec.EnumValue<VillageScopeOverride> DEFAULT_VILLAGE_SCOPE;
+    public static final ForgeConfigSpec.EnumValue<BooleanOverride> DEFAULT_REQUIRE_BELL;
+    public static final ForgeConfigSpec.IntValue DEFAULT_MAX_LIMIT;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTRIES;
 
     static {
         BUILDER.push("detection");

@@ -77,7 +77,7 @@ public final class MobConversionManager {
             newEntity.moveTo(entityToConvert.getX(), entityToConvert.getY(), entityToConvert.getZ(), entityToConvert.getYRot(), entityToConvert.getXRot());
             
             if (newEntity instanceof Mob mob) {
-                mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.CONVERSION, null);
+                mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.CONVERSION, null, null);
             }
             
             boolean convert = entry.mode() == MobConversionConfig.ConversionMode.CONVERT;
